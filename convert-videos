@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Script to convert 10-bit/12-bit HEVC to 8-bit H.264
+
+VIDEOS="*"
+
+mkdir ./converted
+
+for file in $VIDEOS
+do
+    if
+	[[ $file != "converted" && $file != "convert-videos" ]]
+    then
+	ffmpeg -i "$file" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy "converted/$file";
+    fi;
+done
+
+# ffmpeg -i vidoe.mkv -map 0 -c:v libx264 -crf 18 -vf formatyuv420p -c:s copy videoout.mkv
