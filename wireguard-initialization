@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+### Small script i use to set up a simple wireguard client.
+echo "What IP address should this container vpn get? Include CIDR."
+read IPcontainer;
+
+echo "If you want to use a preshared key, generate it on the server with # wg genpsk > peer[n].psk; and copy it here, if you don't want one you can leave it blank."
+read psk;
+
+apt-get update; apt-get install wireguard;
+
+mkdir -p /etc/wireguard/keys
+
+wg genkey | tee /etc/wireguard/keys/vpn-client-private.key | wg pubkey > /etc/wireguard/keys/vpn-client-public.key
+
+chmod -R 700 /etc/wireguard
+
+
+cat > /etc/wireguard/wg0.conf <<EOF
+[Interface]
+PrivateKey = $(cat /etc/wireguard/keys/vpn-client-private.key)
+Address = $IPcontainer
+
+[Peer]
+PublicKey = l60QwHZbpCANqxGkUgMOKZEXL2nGAhj/LIWPvtHLIEg=
+$(if [[ -z $psk ]]; then echo "# PresharedKey = "; else echo "PresharedKey = $psk"; fi)
+AllowedIPs = < serverside wireguard IP >
+Endpoint = < IP or Domainname:port >
+PersistentKeepalive = 25
+EOF
+
+echo -e "Done, here is the public key to give the server:\n"
+cat /etc/wireguard/keys/vpn-client-public.key
+
+exit 0;
