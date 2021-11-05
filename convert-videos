@@ -13,7 +13,7 @@ do
     then
 	ffmpeg -i "$file" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy "converted/$file";
 
-	rm $file;
+	rm "$file";
 
     fi;
 done;
