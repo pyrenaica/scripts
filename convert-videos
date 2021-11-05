@@ -14,8 +14,9 @@ do
 	ffmpeg -i "$file" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy "converted/$file";
 
 	rm $file;
+
     fi;
-    mv ./converted/* ./ && rm -r ./converted;
-done
+done;
+mv ./converted/* ./ && rm -r ./converted;
 
 # ffmpeg -i vidoe.mkv -map 0 -c:v libx264 -crf 18 -vf formatyuv420p -c:s copy videoout.mkv
