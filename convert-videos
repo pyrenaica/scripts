@@ -17,6 +17,6 @@ do
 
     fi;
 done;
-mv ./converted/* ./ && rm -r ./converted;
+mv -v ./converted/* ./ && rm -rv ./converted;
 
 # ffmpeg -i vidoe.mkv -map 0 -c:v libx264 -crf 18 -vf formatyuv420p -c:s copy videoout.mkv
