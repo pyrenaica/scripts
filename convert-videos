@@ -11,10 +11,7 @@ do
     if
 	[[ $file != "converted" && $file != "convert-videos" ]]
     then
-	ffmpeg -i "$file" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy "converted/$file";
-
-	rm "$file";
-
+	ffmpeg -i "$file" -map 0 -c:v libx264 -crf 18 -vf format=yuv420p -c:s copy "converted/$file" && rm "$file";
     fi;
 done;
 mv -v ./converted/* ./ && rm -rv ./converted;
