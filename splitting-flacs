@@ -2,6 +2,6 @@
 
 m="*.flac"
 
-shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm "$m"
+shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm $m
 
 exit 0;
