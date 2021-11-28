@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-album=$(echo *.flac)
 
-shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm "$album";
+split_f () {
+    flac_file=$(echo *.flac)
+    shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm "$flac_file";
 
-exit 0;
+    return;
+}
+
+for album in ./*
+do
+    cd "$album" && split_f && cd ../
+done
