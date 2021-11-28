@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-m="*.flac"
+album=$(echo *.flac)
 
-shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm $m
+shnsplit -f  *.cue -t %n-%t -o flac *.flac && rm "$album";
 
 exit 0;
