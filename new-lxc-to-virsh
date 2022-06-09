@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+naming() {
+    while true; do
+	read -p "Please enter a new container name: " container_name
+	read -p "Is this correct?: $container_name [y/n] " yn
+	case $yn in
+	    [Yy]* ) break;;
+	    [Nn]* ) continue;;
+	    * ) echo "Please answer yes or no.";;
+	esac
+    done
+}
+
+create_lxc_container() {
+    echo "Copying new container from base container..."
+    /usr/bin/lxc-copy -n debian-base -N $container_name -B btrfs
+}
+
+import_container_to_virsh() {
+    echo "importing in virsh..."
+    /usr/bin/sed "s/CONTAINER_NAME/$container_name/g" \
+		 /home/levi/Workspace/LXC/templates/lxc-template.xml\
+		 >/home/levi/Workspace/LXC/templates/$container_name.xml;
+
+    /usr/bin/virsh -c lxc:/// define \
+		   /home/levi/Workspace/LXC/templates/$container_name.xml;
+    echo "Added $container_name to libvirt virsh."
+}
+
+# run the function used to choose a name for the lxc
+naming
+
+# run the function for creating a container
+create_lxc_container
+
+# Import container in libvirt/virsh/virtmanager
+import_container_to_virsh
